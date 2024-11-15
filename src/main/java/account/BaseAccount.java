@@ -11,7 +11,7 @@ public abstract class BaseAccount {
 
     public void withdraw(BigDecimal amount) {
         if (balance.compareTo(amount) < 0) {
-            throw new IllegalStateException("Insufficient funds");
+            throw new IllegalStateException("Insufficient funds\n");
         }
         this.balance = this.balance.subtract(amount);
     }
