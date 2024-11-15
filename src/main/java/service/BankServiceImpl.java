@@ -94,11 +94,6 @@ public class BankServiceImpl implements BankService {
                 .anyMatch(amount -> amount.compareTo(BigDecimal.ZERO) > 0);
     }
 
-    @Override
-    public void logout() {
-        sessionService.logout();
-    }
-
     private void handleDebts(String currentUser, BigDecimal availableAmount) {
         Map<String, BigDecimal> debts = owedAmounts.getOrDefault(currentUser, new HashMap<>());
         BigDecimal remaining = availableAmount;

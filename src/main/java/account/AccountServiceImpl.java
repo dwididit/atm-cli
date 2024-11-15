@@ -21,8 +21,4 @@ public class AccountServiceImpl implements AccountService {
         accounts.put(account.getName().toLowerCase(), account);
     }
 
-    @Override
-    public boolean accountExists(String name) {
-        return accounts.containsKey(name.toLowerCase());
-    }
 }
