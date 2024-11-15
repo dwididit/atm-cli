@@ -27,16 +27,31 @@ public class AtmCli {
                 String[] parts = input.split(" ");
                 switch (parts[0]) {
                     case "login":
+                        if (parts.length < 2) {
+                            throw new IllegalArgumentException("Error: login requires amount (usage: login <name>)\n");
+                        }
                         commandService.login(parts[1]);
                         break;
                     case "deposit":
-                        commandService.deposit(new BigDecimal(parts[1]));
+                        if (parts.length < 2) {
+                            throw new IllegalArgumentException("Error: Deposit requires amount (usage: deposit <amount>)\n");
+                        } else {
+                            commandService.deposit(new BigDecimal(parts[1]));
+                        }
                         break;
                     case "withdraw":
-                        commandService.withdraw(new BigDecimal(parts[1]));
+                        if (parts.length < 2) {
+                            throw new IllegalArgumentException("Error: Withdraw requires amount (usage: withdraw <amount>)\n");
+                        } else {
+                            commandService.withdraw(new BigDecimal(parts[1]));
+                        }
                         break;
                     case "transfer":
-                        commandService.transfer(parts[1], new BigDecimal(parts[2]));
+                        if (parts.length < 3) {
+                            System.out.println("Error: Transfer requires recipient account and amount (usage: transfer <account> <amount>)\n");
+                        } else {
+                            commandService.transfer(parts[1], new BigDecimal(parts[2]));
+                        }
                         break;
                     case "logout":
                         commandService.logout();
