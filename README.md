@@ -54,5 +54,46 @@ Run the application and use the commands below to interact with the system.
   logout
     ```
 
+## Unit Tests for ATM CLI Application
 
+**Unit tests ensure the application behaves as expected under various scenarios. Below is an overview of the tests implemented for different modules and features.**
 
+### Test Coverage
+
+#### 1. Account Service Tests
+   - Class: AccountServiceImplTest 
+   - Purpose: To validate the account management logic, such as creating accounts, retrieving balances, and updating account details.
+#### 2. Command Service Tests
+   - Class: CommandServiceImplTest
+   - Purpose: To test the CLI command parsing and execution logic.
+#### 3. Bank Service Tests
+   - Class: BankServiceImplTest
+   - Purpose: To test higher-level operations like managing multiple customers and their accounts.
+#### 4. Session Service Tests
+   - Class: SessionServiceImplTest
+   - Purpose: To test the handling of user sessions during ATM operations.
+#### 5. CLI Integration Tests
+   - Class: AtmCliTest
+   - Purpose: To test the end-to-end behavior of the CLI interface.
+
+## Get Started
+
+**Prerequisites**
+- Java: Version 17 or higher
+- Build Tool: Apache Maven
+
+**Steps to Run the Application**
+#### 1. Clone the Repository
+  ```bash
+  git@github.com:dwididit/atm-cli.git
+  cd atm-cli/
+  ```
+#### 2. Build the Project Use Maven to compile the application and run tests.
+  ```bash
+  mvn clean install
+  ```
+#### 3. Run the Application Execute the application from the command line.
+```bash
+java -jar target/atm-cli.jar
+```
+#### 4. Interact with the CLI Use the commands described in the Usage section to perform operations.
