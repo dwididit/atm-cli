@@ -2,6 +2,7 @@ package service;
 
 import account.Account;
 import account.AccountService;
+import enums.TransferMode;
 import lombok.RequiredArgsConstructor;
 import session.SessionService;
 
@@ -14,6 +15,14 @@ public class BankServiceImpl implements BankService {
     private final AccountService accountService;
     private final SessionService sessionService;
     private final Map<String, Map<String, BigDecimal>> owedAmounts = new HashMap<>();
+
+    // Set transfer mode here
+    private TransferMode transferMode = TransferMode.PARTIAL_ALLOWED;
+
+    @Override
+    public void setTransferMode(TransferMode transferMode) {
+        this.transferMode = transferMode;
+    }
 
     @Override
     public void createAccount(String name) {
@@ -35,9 +44,7 @@ public class BankServiceImpl implements BankService {
         Account account = accountService.getAccount(currentUser);
         account.deposit(amount);
         accountService.updateAccount(account);
-        printBalance(account);
         handleDebts(currentUser, amount);
-        System.out.println();
     }
 
     @Override
@@ -47,7 +54,6 @@ public class BankServiceImpl implements BankService {
         account.withdraw(amount);
         accountService.updateAccount(account);
         printBalance(account);
-        System.out.println();
     }
 
     @Override
@@ -56,12 +62,35 @@ public class BankServiceImpl implements BankService {
         target = target.toLowerCase();
 
         if (target.equals(currentUser)) {
-            throw new RuntimeException("Cannot transfer money to yourself");
+            throw new IllegalStateException("Cannot transfer money to yourself");
         }
 
         Account sourceAccount = accountService.getAccount(currentUser);
         BigDecimal balance = sourceAccount.getBalance();
 
+        // Handle Full Only Transfer Mode
+        if (transferMode == TransferMode.FULL_ONLY) {
+            if (balance.compareTo(requestedAmount) < 0) {
+                System.out.println("Insufficient funds for full transfer. Required: $" + requestedAmount + ", Available: $" + balance);
+                System.out.println();
+                return;
+            }
+
+            Account targetAccount = accountService.getAccount(target);
+            if (targetAccount == null) {
+                targetAccount = accountService.createAccount(target);
+            }
+
+            sourceAccount.transfer(targetAccount, requestedAmount);
+            System.out.println("Transferred $" + requestedAmount + " to " + target);
+            accountService.updateAccount(sourceAccount);
+            accountService.updateAccount(targetAccount);
+            printBalance(sourceAccount);
+            System.out.println();
+            return;
+        }
+
+        // Handle Partial Allowed Transfer Mode
         if (sourceAccount.getBalance().compareTo(BigDecimal.ZERO) == 0) {
             System.out.println("Insufficient funds. Your balance is $" + balance);
             System.out.println();
@@ -102,12 +131,6 @@ public class BankServiceImpl implements BankService {
         System.out.println();
     }
 
-    private boolean hasOutstandingDebt(String user) {
-        Map<String, BigDecimal> debts = owedAmounts.getOrDefault(user.toLowerCase(), new HashMap<>());
-        return debts.values().stream()
-                .anyMatch(amount -> amount.compareTo(BigDecimal.ZERO) > 0);
-    }
-
     private void handleDebts(String currentUser, BigDecimal availableAmount) {
         Map<String, BigDecimal> debts = owedAmounts.getOrDefault(currentUser.toLowerCase(), new HashMap<>());
         BigDecimal remaining = availableAmount;
@@ -140,6 +163,11 @@ public class BankServiceImpl implements BankService {
         } else {
             owedAmounts.put(currentUser.toLowerCase(), debts);
         }
+
+        Account updatedAccount = accountService.getAccount(currentUser);
+        printBalance(updatedAccount);
+        printOwedAmounts(currentUser);
+        System.out.println();
     }
 
     private void addOwedAmount(String debtor, String creditor, BigDecimal amount) {
