@@ -68,11 +68,6 @@ public class BankServiceImpl implements BankService {
             return;
         }
 
-        // Check if user already owes money and has zero balance
-        if (hasOutstandingDebt(currentUser) && sourceAccount.getBalance().compareTo(BigDecimal.ZERO) == 0) {
-            throw new RuntimeException("Insufficient balance. Please clear existing debts first.\n");
-        }
-
         Account targetAccount;
         try {
             targetAccount = accountService.getAccount(target);
