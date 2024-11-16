@@ -17,6 +17,14 @@ public class AtmCli {
         BankService bankService = new BankServiceImpl(accountService, sessionService);
         CommandService commandService = new CommandServiceImpl(bankService, sessionService);
 
+        System.out.println("Welcome to ATM CLI");
+        System.out.println("* `login [name]` - Logs in as this customer and creates the customer if not exist");
+        System.out.println("* `deposit [amount]` - Deposits this amount to the logged in customer");
+        System.out.println("* `withdraw [amount]` - Withdraws this amount from the logged in customer");
+        System.out.println("* `transfer [target] [amount]` - Transfers this amount from the logged in customer to the target customer");
+        System.out.println("* `logout` - Logs out of the current customer");
+        System.out.println("Please type below!");
+
         Scanner scanner = new Scanner(System.in);
 
         while (true) {
@@ -48,9 +56,16 @@ public class AtmCli {
                         break;
                     case "transfer":
                         if (parts.length < 3) {
-                            System.out.println("Error: Transfer requires recipient account and amount (usage: transfer <account> <amount>)\n");
+                            throw new IllegalArgumentException("Error: Transfer requires recipient account and amount (usage: transfer <account> <amount>)\n");
                         } else {
-                            commandService.transfer(parts[1], new BigDecimal(parts[2]));
+                            String targetAccount = parts[1].toLowerCase();
+                            String currentUser = sessionService.getCurrentUser();
+
+                            if (targetAccount.equals(currentUser)) {
+                                throw new IllegalArgumentException("Error: Cannot transfer money to yourself\n");
+                            } else {
+                                commandService.transfer(parts[1], new BigDecimal(parts[2]));
+                            }
                         }
                         break;
                     case "logout":

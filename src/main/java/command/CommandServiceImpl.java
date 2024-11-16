@@ -3,6 +3,7 @@ package command;
 import lombok.RequiredArgsConstructor;
 import service.BankService;
 import session.SessionService;
+import utils.AccountValidationUtils;
 
 import java.math.BigDecimal;
 
@@ -13,6 +14,7 @@ public class CommandServiceImpl extends BaseCommand implements CommandService {
 
     @Override
     public void login(String name) {
+        AccountValidationUtils.validateAccountName(name);
         validateArgs(name);
         bankService.createAccount(name);
         sessionService.login(name);

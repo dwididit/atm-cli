@@ -1,5 +1,7 @@
 package account;
 
+import utils.AccountValidationUtils;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -8,6 +10,7 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public Account createAccount(String name) {
+        AccountValidationUtils.validateAccountName(name);
         return accounts.computeIfAbsent(name.toLowerCase(), Account::new);
     }
 

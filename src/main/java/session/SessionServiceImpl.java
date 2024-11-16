@@ -8,7 +8,7 @@ public class SessionServiceImpl implements SessionService {
 
     @Override
     public void login(String username) {
-        this.currentUser = username;
+        this.currentUser = username.toLowerCase();
     }
 
     @Override
