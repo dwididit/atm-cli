@@ -1,5 +1,6 @@
 package command;
 
+import enums.TransferMode;
 import lombok.RequiredArgsConstructor;
 import service.BankService;
 import session.SessionService;
@@ -14,6 +15,12 @@ public class CommandServiceImpl extends BaseCommand implements CommandService {
 
     @Override
     public void login(String name) {
+
+        String currentUser = sessionService.getCurrentUser();
+        if (currentUser != null && !currentUser.isEmpty()) {
+            throw new IllegalStateException(currentUser + " need to logout first\n");
+        }
+
         AccountValidationUtils.validateAccountName(name);
         validateArgs(name);
         bankService.createAccount(name);
@@ -39,6 +46,7 @@ public class CommandServiceImpl extends BaseCommand implements CommandService {
         checkLoggedIn(sessionService);
         validateArgs(target);
         validateAmount(amount);
+        bankService.setTransferMode(TransferMode.PARTIAL_ALLOWED);
         bankService.transfer(target, amount);
     }
 
