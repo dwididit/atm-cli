@@ -80,7 +80,7 @@ Run the application and use the commands below to interact with the system.
 
 **Prerequisites**
 - Java: Version 17 or higher
-- Build Tool: Apache Maven
+- Apache Maven 3.9.8
 
 **Steps to Run the Application**
 #### 1. Clone the Repository

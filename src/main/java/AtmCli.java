@@ -56,7 +56,7 @@ public class AtmCli {
         System.out.println("* `withdraw [amount]` - Withdraws this amount from the logged in customer");
         System.out.println("* `transfer [target] [amount]` - Transfers this amount from the logged in customer to the target customer");
         System.out.println("* `logout` - Logs out of the current customer");
-        System.out.println("Please type below!");
+        System.out.println("Please type command!\n");
     }
 
     private void processCommand(String input) {
