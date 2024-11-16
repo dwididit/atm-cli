@@ -11,7 +11,7 @@ public class Account extends BaseAccount {
     private String name;
 
     public Account(String name) {
-        this.name = name;
+        this.name = name.toLowerCase();
         this.balance = BigDecimal.ZERO;
     }
 
