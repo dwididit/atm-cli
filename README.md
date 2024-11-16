@@ -79,7 +79,7 @@ Run the application and use the commands below to interact with the system.
 ## Get Started
 
 **Prerequisites**
-- Java: Version 17 or higher
+- Java 17
 - Apache Maven 3.9.8
 
 **Steps to Run the Application**
