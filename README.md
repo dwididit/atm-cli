@@ -96,4 +96,3 @@ Run the application and use the commands below to interact with the system.
 ```bash
 java -jar target/atm-cli-1.0-SNAPSHOT.jar
 ```
-#### 4. Interact with the CLI Use the commands described in the Usage section to perform operations.
