@@ -90,10 +90,10 @@ Run the application and use the commands below to interact with the system.
   ```
 #### 2. Build the Project Use Maven to compile the application and run tests.
   ```bash
-  mvn clean install
+  mvn clean package
   ```
 #### 3. Run the Application Execute the application from the command line.
 ```bash
-java -jar target/atm-cli.jar
+java -jar target/atm-cli-1.0-SNAPSHOT.jar
 ```
 #### 4. Interact with the CLI Use the commands described in the Usage section to perform operations.
